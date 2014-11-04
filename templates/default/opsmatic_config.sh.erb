@@ -1,0 +1,36 @@
+#!/bin/bash
+cd /root
+ENVIRONMENT=`cat /root/environment.txt`
+if [[ -z $ENVIRONMENT ]]; then
+  ENVIRONMENT="development"
+fi  
+
+echo '' > /tmp/opsmatic-agent.conf
+
+HOSTALIAS="<%= node['opsmatic']['hostalias'] %>"
+if [[ ! -z $HOSTALIAS ]]; then
+  echo 'host_alias = "<% node['opsmatic']['hostalias'] %>"' >> /tmp/opsmatic-agent.conf
+fi  
+
+GROUPS="<%= node['opsmatic']['groups'] %>"
+if [[ $GROUPS == "" ]]; then
+  echo "groups = \"$ENVIRONMENT\"" >> /tmp/opsmatic-agent.conf
+else
+  echo "groups = \"$ENVIRONMENT,<%= node['opsmatic']['groups'] %>\"" >> /tmp/opsmatic-agent.conf
+fi  
+
+if [[ ! -f  /etc/opsmatic-agent.conf ]]; then
+  mv /tmp/opsmatic-agent.conf /etc/opsmatic-agent.conf
+else
+
+  OldConfig=`md5sum /etc/opsmatic-agent.conf | awk '{ print $1 }'`
+  NewConfig=`md5sum /tmp/opsmatic-agent.conf | awk '{ print $1 }'`
+
+  if [ "$OldConfig" = "$NewConfig" ]
+    then
+    echo "No Changes"
+  else
+  mv /tmp/opsmatic-agent.conf /etc/opsmatic-agent.conf
+  pkill opsmatic-agent
+  fi
+fi
