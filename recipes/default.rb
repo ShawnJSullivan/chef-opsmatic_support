@@ -12,6 +12,16 @@
 
 ##Read in array of Groups
 ##Add Environment from box to array and deploy
+template "/root/hosts-config.sh" do
+  source "hosts-config.sh.erb"
+  mode 0700
+end
+
+cron "add_hostname_to_hosts" do
+  time :reboot
+  action :create
+  command "/root/./hosts-config.sh"
+end
 
 template "/root/opsmatic_config.sh" do
   source "opsmatic_config.sh.erb"
