@@ -17,6 +17,10 @@ template "/root/hosts-config.sh" do
   mode 0700
 end
 
+execute 'run hosts-config' do
+  command "/root/./hosts-config.sh"
+end
+
 cron "add_hostname_to_hosts" do
   time :reboot
   action :create
