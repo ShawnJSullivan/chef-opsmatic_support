@@ -3,7 +3,7 @@ HOSTNAME=`hostname`
 
 EXISTS=`grep $HOSTNAME /etc/hosts -c`
 
-if [[ $EXISTS -gt 0]]; then
+if [[ $EXISTS -gt 0 ]]; then
   echo "Hostname already exists in /etc/hosts"
   exit 0
 else
