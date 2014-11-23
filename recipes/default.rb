@@ -21,6 +21,10 @@ execute 'run hosts-config' do
   command "/root/./hosts-config.sh"
 end
 
+ohai "reload" do
+  action :reload
+end
+
 cron "add_hostname_to_hosts" do
   time :reboot
   action :create
