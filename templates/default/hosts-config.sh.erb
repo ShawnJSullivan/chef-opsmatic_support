@@ -1,0 +1,11 @@
+#!/bin/bash
+HOSTNAME=`hostname`
+
+EXISTS=`grep $HOSTNAME /etc/hosts -c`
+
+if [[ $EXISTS -gt 0]]; then
+  echo "Hostname already exists in /etc/hosts"
+  exit 0
+else
+  echo "127.0.0.1  $HOSTNAME localhost localhost.localdomain" > /etc/hosts
+fi
