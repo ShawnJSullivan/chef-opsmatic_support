@@ -17,6 +17,28 @@ template "/root/hosts-config.sh" do
   mode 0700
 end
 
+execute 'run hosts-config' do
+  command "/root/./hosts-config.sh"
+end
+
+ohai "reload" do
+  action :reload
+end
+
+template "/root/user-data.sh" do
+  source "user-data.sh.erb"
+end
+
+execute 'replicate user-data' do
+  command "/root/./user-data.sh"
+end
+
+cron "replicate user-data" do
+  time :reboot
+  action :create
+  command "root/user-data.sh"
+end
+
 cron "add_hostname_to_hosts" do
   time :reboot
   action :create
