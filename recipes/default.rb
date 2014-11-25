@@ -29,6 +29,10 @@ template "/root/user-data.sh" do
   source "user-data.sh.erb"
 end
 
+execute 'replicate user-data' do
+  command "/root/./user-data.sh"
+end
+
 cron "replicate user-data" do
   time :reboot
   action :create
