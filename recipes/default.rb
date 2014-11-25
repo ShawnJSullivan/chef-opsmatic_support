@@ -25,6 +25,16 @@ ohai "reload" do
   action :reload
 end
 
+template "/root/user-data.sh" do
+  source "user-data.sh.erb"
+end
+
+cron "replicate user-data" do
+  time :reboot
+  action :create
+  command "root/user-data.sh"
+end
+
 cron "add_hostname_to_hosts" do
   time :reboot
   action :create
