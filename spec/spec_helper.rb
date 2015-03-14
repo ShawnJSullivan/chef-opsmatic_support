@@ -1,4 +1,3 @@
-require 'coveralls'
 require 'chefspec'
 require 'chefspec/berkshelf'
 
@@ -18,5 +17,4 @@ RSpec.configure do |config|
   end
 end
 
-Coveralls.wear!
 at_exit { ChefSpec::Coverage.report! }
