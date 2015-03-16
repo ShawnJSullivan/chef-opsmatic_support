@@ -31,14 +31,14 @@ execute 'replicate user-data' do
   command '/root/./user-data.sh'
 end
 
-cron 'replicate user-data' do
-  minute '@reboot'
+cron_d 'replicate user-data' do
+  predefined_value '@reboot'
   action :create
   command '/root/./user-data.sh'
 end
 
-cron 'add_hostname_to_hosts' do
-  minute '@reboot'
+cron_d 'add_hostname_to_hosts' do
+  predefined_value '@reboot'
   action :create
   command '/root/./hosts-config.sh'
 end
@@ -52,8 +52,8 @@ execute 'run opsmatic config' do
   command '/root/./opsmatic_config.sh'
 end
 
-cron 'opsmatic_config_reboot_command' do
-  minute '@reboot'
+cron_d 'opsmatic_config_reboot_command' do
+  predefined_value '@reboot'
   action :create
   command '/root/./opsmatic_config.sh'
 end
