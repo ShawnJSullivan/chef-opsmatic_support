@@ -6,58 +6,54 @@
 #
 # All rights reserved - Do Not Redistribute
 #
-
-
-##Create script to update /etc/opsmatic-agent.conf dynamically
-
-##Read in array of Groups
-##Add Environment from box to array and deploy
-template "/root/hosts-config.sh" do
-  source "hosts-config.sh.erb"
+## Create script to update /etc/opsmatic-agent.conf dynamically
+## Read in array of Groups
+## Add Environment from box to array and deploy
+template '/root/hosts-config.sh' do
+  source 'hosts-config.sh.erb'
   mode 0700
 end
 
 execute 'run hosts-config' do
-  command "/root/./hosts-config.sh"
+  command '/root/./hosts-config.sh'
 end
 
-ohai "reload" do
+ohai 'reload' do
   action :reload
 end
 
-template "/root/user-data.sh" do
-  source "user-data.sh.erb"
+template '/root/user-data.sh' do
+  source 'user-data.sh.erb'
   mode 0700
 end
 
 execute 'replicate user-data' do
-  command "/root/./user-data.sh"
+  command '/root/./user-data.sh'
 end
 
-cron "replicate user-data" do
-  time :reboot
+cron 'replicate user-data' do
+  minute '@reboot'
   action :create
-  command "/root/./user-data.sh"
+  command '/root/./user-data.sh'
 end
 
-cron "add_hostname_to_hosts" do
-  time :reboot
+cron 'add_hostname_to_hosts' do
+  minute '@reboot'
   action :create
-  command "/root/./hosts-config.sh"
+  command '/root/./hosts-config.sh'
 end
 
-template "/root/opsmatic_config.sh" do
-  source "opsmatic_config.sh.erb"
+template '/root/opsmatic_config.sh' do
+  source 'opsmatic_config.sh.erb'
   mode 0700
 end
 
 execute 'run opsmatic config' do
-  command "/root/./opsmatic_config.sh"
+  command '/root/./opsmatic_config.sh'
 end
 
-cron "opsmatic_config_reboot_command" do
-  time :reboot
+cron 'opsmatic_config_reboot_command' do
+  minute '@reboot'
   action :create
-  command "/root/./opsmatic_config.sh"
+  command '/root/./opsmatic_config.sh'
 end
-
