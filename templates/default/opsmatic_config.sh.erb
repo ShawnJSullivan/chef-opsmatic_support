@@ -31,6 +31,9 @@ else
     echo "No Changes"
   else
   mv /tmp/opsmatic-agent.conf /etc/opsmatic-agent.conf
-  pkill opsmatic-agent
+  initctl stop opsmatic-agent
+  rm -Rf /var/db/opsmatic-agent
+  config-opsmatic-agent
+  initctl start opsmatic-agent
   fi
 fi
