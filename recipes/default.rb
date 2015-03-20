@@ -12,10 +12,12 @@
 template '/root/hosts-config.sh' do
   source 'hosts-config.sh.erb'
   mode 0700
+  notifies :run, 'execute[run hosts-config]', :immediately
 end
 
 execute 'run hosts-config' do
   command '/root/./hosts-config.sh'
+  action :nothing
 end
 
 ohai 'reload' do
@@ -25,10 +27,12 @@ end
 template '/root/user-data.sh' do
   source 'user-data.sh.erb'
   mode 0700
+  notifies :run, 'execute[replicate user-data]', :immediately
 end
 
 execute 'replicate user-data' do
   command '/root/./user-data.sh'
+  action :nothing
 end
 
 cron_d 'replicate user-data' do
@@ -46,10 +50,12 @@ end
 template '/root/opsmatic_config.sh' do
   source 'opsmatic_config.sh.erb'
   mode 0700
+  notifies :run, 'execute[run opsmatic config]', :immediately
 end
 
 execute 'run opsmatic config' do
   command '/root/./opsmatic_config.sh'
+  action :nothing
 end
 
 cron_d 'opsmatic_config_reboot_command' do
