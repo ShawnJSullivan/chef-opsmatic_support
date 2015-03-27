@@ -1,5 +1,5 @@
 #!/bin/bash
-curl http://169.254.169.254/latest/user-data/ --connect-timeout 3 > results
+results=`curl http://169.254.169.254/latest/user-data/ --connect-timeout 3`
 if [[ `echo $results | grep -c 404` -gt 0 || -z $results ]]; then
   echo $results > aws-userdata.sh
   sed -i 's/\r//' aws-userdata.sh
