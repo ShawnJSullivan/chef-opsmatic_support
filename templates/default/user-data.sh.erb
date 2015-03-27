@@ -4,7 +4,7 @@ if [[ `echo $results | grep -c 404` -gt 0 || -z $results ]]; then
   echo "ERROR: No user data found. Response was |${results}|"
   exit 0
 else
-  echo -e $results > aws-userdata.sh
+  curl -o aws-userdata.sh http://169.254.169.254/latest/user-data/
   sed -i 's/\r//' aws-userdata.sh
   chmod +x aws-userdata.sh
   /bin/bash aws-userdata.sh >> /var/log/cloud-init.log
